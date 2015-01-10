@@ -1,0 +1,85 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="css/strength.css">
+  <script src="scripts/md5.js"></script>
+  <script src="scripts/sha1.js"></script>
+  <script src="scripts/sha256.js"></script>
+  <script src="scripts/sha512.js"></script>
+  <script src="scripts/ripemd160.js"></script>
+  <script src="scripts/jquery-1.11.2.min.js"></script>
+  <script src="scripts/strength.js"></script>
+  <script src="scripts/js.js"></script>
+  <script src="scripts/caesar.js"></script>
+  <title>IsLeaked</title>
+
+  <script type="text/javascript">
+    var arr=[];
+
+    $(document).ready(function () {
+
+      $('#pwd').strength({
+        strengthClass: 'strength',
+        strengthMeterClass: 'strength_meter',
+        strengthButtonClass: 'button_strength',
+        strengthButtonText: '',
+        strengthButtonTextToggle: ''
+      });
+
+      $.get("pwd_data.csv", {}, function (csv,textStatus){
+        console.log(csv.split("\n"));
+        arr = csv.split("\n");
+      });
+
+    });
+
+    $(document).on('keyup','#pwd',function(e) {
+      var pwd = $('#pwd').val();
+
+      if(pwd.length==0){
+        clear();
+        return;
+      }
+
+      $('#md5').html(hex_md5(pwd)+"<br>"+b64_md5(pwd));
+      $('#sha1').html(hex_sha1(pwd)+"<br>"+b64_sha1(pwd));
+      $('#sha256').html(hex_sha256(pwd)+"<br>"+b64_sha256(pwd));
+      $('#sha512').html(hex_sha512(pwd)+"<br>"+b64_sha512(pwd));
+      $('#rmd160').html(hex_rmd160(pwd)+"<br>"+b64_rmd160(pwd));
+      $('#caesar').html(crypt(pwd,3));
+
+      console.log(pwd);
+      if($.inArray(pwd,arr)>-1){
+        console.log("true");
+      }
+
+    });
+
+    function clear(){
+      $('#md5').html("");
+      $('#sha1').html("");
+      $('#sha256').html("");
+      $('#sha512').html("");
+      $('#rmd160').html("");
+      $('#caesar').html("");
+    }
+
+  </script>
+</head>
+<body>
+
+  <form id="myform" action="" method="get" accept-charset="utf-8">
+    <input id="pwd" type="text" name="" value="">
+  </form>
+
+  <p>
+    <div id="search">!!search!!</div><br>
+    <div id="md5">1</div><br>
+    <div id="sha1">2</div><br>
+    <div id="sha256">3</div><br>
+    <div id="sha512">4</div><br>
+    <div id="rmd160">5</div><br>
+    <div id="caesar">6</div><br>
+  </p>
+</body>
+</html>
