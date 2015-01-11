@@ -1,85 +1,111 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/strength.css">
+  <script src="scripts/jquery-1.11.2.min.js"></script>
   <script src="scripts/md5.js"></script>
   <script src="scripts/sha1.js"></script>
   <script src="scripts/sha256.js"></script>
   <script src="scripts/sha512.js"></script>
   <script src="scripts/ripemd160.js"></script>
-  <script src="scripts/jquery-1.11.2.min.js"></script>
   <script src="scripts/strength.js"></script>
   <script src="scripts/js.js"></script>
   <script src="scripts/caesar.js"></script>
+  <script src="scripts/myscript.js"></script>
+  <script src="scripts/bootstrap.js"></script>
   <title>IsLeaked</title>
-
-  <script type="text/javascript">
-    var arr=[];
-
-    $(document).ready(function () {
-
-      $('#pwd').strength({
-        strengthClass: 'strength',
-        strengthMeterClass: 'strength_meter',
-        strengthButtonClass: 'button_strength',
-        strengthButtonText: '',
-        strengthButtonTextToggle: ''
-      });
-
-      $.get("pwd_data.csv", {}, function (csv,textStatus){
-        console.log(csv.split("\n"));
-        arr = csv.split("\n");
-      });
-
-    });
-
-    $(document).on('keyup','#pwd',function(e) {
-      var pwd = $('#pwd').val();
-
-      if(pwd.length==0){
-        clear();
-        return;
-      }
-
-      $('#md5').html(hex_md5(pwd)+"<br>"+b64_md5(pwd));
-      $('#sha1').html(hex_sha1(pwd)+"<br>"+b64_sha1(pwd));
-      $('#sha256').html(hex_sha256(pwd)+"<br>"+b64_sha256(pwd));
-      $('#sha512').html(hex_sha512(pwd)+"<br>"+b64_sha512(pwd));
-      $('#rmd160').html(hex_rmd160(pwd)+"<br>"+b64_rmd160(pwd));
-      $('#caesar').html(crypt(pwd,3));
-
-      console.log(pwd);
-      if($.inArray(pwd,arr)>-1){
-        console.log("true");
-      }
-
-    });
-
-    function clear(){
-      $('#md5').html("");
-      $('#sha1').html("");
-      $('#sha256').html("");
-      $('#sha512').html("");
-      $('#rmd160').html("");
-      $('#caesar').html("");
-    }
-
-  </script>
 </head>
 <body>
+  <div class="title">
+    <h1><span>is</span>Leaked?</h1>
+    <form id="myform" action="" method="get" accept-charset="utf-8">
+      <input id="pwd" type="text" value="" placeholder="test your password"data-container="body" data-toggle="popover" data-placement="left" data-content=" ">
+    </form>
 
-  <form id="myform" action="" method="get" accept-charset="utf-8">
-    <input id="pwd" type="text" name="" value="">
-  </form>
+    <div id="search" style="display: none;">
+      <div  class="popover search arrow_box" role="tooltip">
+        <div class="arrow arrow_custom"></div>
+        <h3>
+          <span class="glyphicon glyphicon-warning-sign"></span>
+        </h3>
+        <h3>
+          這是密碼洩漏清單中的高危險群！
+        </h3>
+      </div>
+    </div>
 
-  <p>
-    <div id="search">!!search!!</div><br>
-    <div id="md5">1</div><br>
-    <div id="sha1">2</div><br>
-    <div id="sha256">3</div><br>
-    <div id="sha512">4</div><br>
-    <div id="rmd160">5</div><br>
-    <div id="caesar">6</div><br>
-  </p>
+  </div>
+
+  <div class="result">
+    <div class="row">
+      <div class="col-md-6">
+        <h3><span class="label label-primary">SHA1</span></h3>
+        <p>
+          <span class="badge">hex</span>
+          <span id="sha1_hex"></span>
+        </p>
+        <p>
+          <span class="badge">base64</span>
+          <span id="sha1_b64"></span>
+        </p>
+      </div>
+
+
+      <div class="col-md-6">
+        <h3><span class="label label-primary">MD5</span></h3>
+        <p><span class="badge">hex</span>
+          <span id="md5_hex"></span>
+        </p>
+        <p><span class="badge">base64</span>
+          <span id="md5_b64"></span>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h3><span class="label label-primary">SHA256</span></h3>
+        <p>
+          <span class="badge">hex</span>
+          <span id="sha256_hex"></span>
+        </p>
+        <p>
+          <span class="badge">base64</span>
+          <span id="sha256_b64"></span>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <h3><span class="label label-primary">RMD160</span></h3>
+        <p>
+          <span class="badge">hex</span>
+          <span id="rmd160_hex"></span>
+        </p>
+        <p></p>
+        <span class="badge">base64</span>
+        <span id="rmd160_b64"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3><span class="label label-primary">SAH512</span></h3>
+        <p>
+          <span class="badge">hex</span>
+          <span id="sha512_hex"></span>
+        </p>
+        <p>
+          <span class="badge">base64</span>
+          <span id="sha512_b64"></span>
+        </p>
+      </div>
+
+
+      <div class="col-md-6">
+        <h3><span class="label label-primary">Caesar (shift size 3)</span></h3>
+        <p id="caesar"></p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
